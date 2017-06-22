@@ -1,4 +1,4 @@
-package com.tauren.stock;
+package com.tauren.common;
 
 import org.junit.Test;
 

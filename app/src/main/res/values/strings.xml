@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">stock</string>
+    <string name="app_name">test</string>
+
+    <string name="main_str_btn" >请求</string>
 </resources>
