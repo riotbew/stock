@@ -18,4 +18,6 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     public void onClick(View view) {
 
     }
+
+
 }

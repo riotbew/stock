@@ -18,6 +18,12 @@
         android:text="@string/main_str_btn"
         android:id="@+id/demo_btn_request"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="demo_btn_thread"
+        android:id="@+id/demo_btn_thread"/>
+
     <TextView
         android:id="@+id/demo_tv_result"
         android:layout_width="wrap_content"
