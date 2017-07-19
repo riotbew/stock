@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.tauren.common.BaseActivity;
+import com.tauren.common.net.Net;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +32,7 @@ public class NetActivity extends BaseActivity {
         int id = view.getId();
         switch (id) {
             case R.id.net_request:
-
+                Net.getInstance();
                 break;
             case R.id.net_result:
                 break;

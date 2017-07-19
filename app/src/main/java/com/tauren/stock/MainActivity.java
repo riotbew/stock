@@ -10,18 +10,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.tauren.common.BaseActivity;
+import com.tauren.common.net.Net;
+import com.tauren.common.net.NetCallBack;
 import com.tauren.stock.constant.BTC38URL;
 
-import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class MainActivity extends BaseActivity {
 
@@ -32,7 +30,6 @@ public class MainActivity extends BaseActivity {
     EditText et_input;
     @BindView(R.id.demo_tv_result)
     TextView tv_result;
-    OkHttpClient client = new OkHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,37 +59,24 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.demo_btn_request)
     public void request() {
-        String url = BTC38URL.api_host+BTC38URL.history+"?mk_type=btc&c=med";
+        String url = BTC38URL.api_host+BTC38URL.history;
+        Map<String, Object> params = new ConcurrentHashMap<>();
+        params.put("mk_type","cny");
+        params.put("c","med");
         if (!et_input.getText().toString().equals("")) {
             url = et_input.getText().toString();
         }
-        final Call _call = client.newCall(new Request.Builder().url(url).build());
-        _call.enqueue(new Callback() {
-
+        Net.getInstance().get(url, params, new NetCallBack<String>() {
             @Override
-            public void onFailure(final Call call, IOException e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        tv_result.setText(call.toString());
-                    }
-                });
+            public void onResponse(String result) {
+                tv_result.setText(result);
             }
 
             @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            tv_result.setText(response.body().string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+            public void onFailure(int code, String result) {
+                tv_result.setText(result);
             }
-        });
+        },String.class);
     }
 
     @OnClick({R.id.demo_btn_thread})

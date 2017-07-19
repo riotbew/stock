@@ -5,7 +5,7 @@ package com.tauren.common.net;
  */
 
 public class Config {
-    public final int GET = 0;
-    public final int POST = 1;
-    public final int UPLOAD = 2;
+    public static final int GET = 0;
+    public static final int POST = 1;
+    public static final int UPLOAD = 2;
 }

@@ -13,23 +13,22 @@ import java.util.Map;
 
 
 public class NetInfo<T> {
-    public Map<String, String> headers;
-    public Map<String, Object> params;
+    private Map<String, String> headers;
+    private Map<String, Object> params;
     public String url;
     public ResultProcessor resultProcessor;
-    public HCallBack<T> callBack;
+    public NetCallBack<T> callBack;
     public String response;
-    public Class resultModel;
+    public Class<T> resultModel;
     public String requestKey;
     public int requestType;
     public boolean enableCache = false;
 
-    public NetInfo(Map<String, String> headers, Map<String, Object> params, String url, HCallBack<T> callBack, String response, Class resultModel, int requestType) {
+    public NetInfo(Map<String, String> headers, Map<String, Object> params, String url, NetCallBack<T> callBack, Class resultModel, int requestType) {
         this.headers = headers;
         this.params = params;
         this.url = url;
         this.callBack = callBack;
-        this.response = response;
         this.resultModel = resultModel;
         this.requestType = requestType;
         this.requestKey = getRequestKey();
@@ -62,7 +61,19 @@ public class NetInfo<T> {
         return requestKey;
     }
 
-    public ResultProcessor getDefaultProcessor() {
+    private ResultProcessor getDefaultProcessor() {
         return new DefaultResultProcessor(this);
+    }
+
+    public void setResultProcessor(ResultProcessor processor) {
+        this.resultProcessor = processor;
+    }
+
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
+
+    public Map<String, Object> getParams() {
+        return params;
     }
 }
