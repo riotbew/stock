@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.tauren.common.BaseActivity;
-import com.tauren.common.net.Net;
+import com.tauren.common.net.NetWork;
 import com.tauren.common.net.NetCallBack;
 import com.tauren.stock.constant.BTC38URL;
 
@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity {
         if (!et_input.getText().toString().equals("")) {
             url = et_input.getText().toString();
         }
-        Net.getInstance().get(url, params, new NetCallBack<String>() {
+        NetWork.getInstance().get(url, params, new NetCallBack<String>() {
             @Override
             public void onResponse(String result) {
                 tv_result.setText(result);

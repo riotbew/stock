@@ -17,10 +17,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-/**
- * Created by Tauren on 17/7/19.
- */
-
 public class OKClient extends HttpClient{
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("charset=utf-8");
     private OkHttpClient mClient;
@@ -60,30 +56,36 @@ public class OKClient extends HttpClient{
         if (info == null)
             return null;
 
-        Map<String, String> headers = info.getHeaders();
-        Map<String, Object> params = info.getParams();
+        Map headers = info.getHeaders();
+        Map params = info.getParams();
         Request.Builder builder = new Request.Builder();
         builder.url(info.url);
-        Set<String> keySet = headers.keySet();
-        for (String key:keySet) {
-            builder.addHeader(key, headers.get(key));
+        Set keySet;
+        if (headers != null) {
+
+            keySet = headers.keySet();
+            for (Object key:keySet) {
+                builder.addHeader((String) key, (String) headers.get(key));
+            }
         }
-        keySet = params.keySet();
         StringBuilder tempParams = new StringBuilder();
-        int pos = 0;
-        Object tmp;
-        for (String key : keySet) {
-            if (pos > 0) {
-                tempParams.append("&");
+        if (params != null) {
+            keySet = params.keySet();
+            int pos = 0;
+            Object tmp;
+            for (Object key : keySet) {
+                if (pos > 0) {
+                    tempParams.append("&");
+                }
+                tmp = params.get(key);
+                try {
+                    if (tmp instanceof String)
+                        tempParams.append(String.format("%s=%s", key, URLEncoder.encode((String) tmp, "utf-8")));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                pos++;
             }
-            tmp = params.get(key);
-            try {
-                if (tmp instanceof String)
-                    tempParams.append(String.format("%s=%s", key, URLEncoder.encode((String) tmp, "utf-8")));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            pos++;
         }
         builder.post(RequestBody.create(MEDIA_TYPE_JSON, tempParams.toString()));
         return builder.build();
@@ -93,9 +95,11 @@ public class OKClient extends HttpClient{
         StringBuilder url = new StringBuilder(info.url);
         url.append("?");
         Map params = info.getParams();
-        Set<String> keySet = params.keySet();
-        for (String key: keySet) {
-            url.append(key).append("=").append(params.get(key)).append("&");
+        if (params != null) {
+            Set keySet = params.keySet();
+            for (Object key: keySet) {
+                url.append(key).append("=").append(params.get(key)).append("&");
+            }
         }
         url.deleteCharAt(url.length()-1);
         Request.Builder builder = new Request.Builder();

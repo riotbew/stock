@@ -4,20 +4,23 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 
+import com.orhanobut.logger.Logger;
+
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Net {
+public class NetWork {
 
     private HttpClient mClient;
     private Handler mHandler;
-    ArrayList<RequestProcessor> requestProcessors = new ArrayList<>();
+    private ArrayList<RequestProcessor> requestProcessors = new ArrayList<>();
 
     private  static class NetworkHolder {
-        private static final Net INSTANCE  = new Net();
+        private static final NetWork INSTANCE  = new NetWork();
     }
 
-    private Net(){
+    private NetWork(){
         mClient = new OKClient();
         NetWorkThread thread = new NetWorkThread("NetWork-Thread");
         thread.start();
@@ -46,13 +49,13 @@ public class Net {
             }
             //请求
             switch (info.requestType) {
-                case Config.GET:
+                case NetConfig.GET:
                     mClient.get(info);
                     break;
-                case Config.POST:
+                case NetConfig.POST:
                     mClient.post(info);
                     break;
-                case Config.UPLOAD:
+                case NetConfig.UPLOAD:
                     break;
             }
             return true;
@@ -66,7 +69,7 @@ public class Net {
         }
     }
 
-    public static Net getInstance() {
+    public static NetWork getInstance() {
         return NetworkHolder.INSTANCE;
     }
 
@@ -77,16 +80,16 @@ public class Net {
     }
 
     public void get(String url, Map<String,Object> params, NetCallBack callBack, Class clasz) {
-        request(new NetInfo(null,params,url, callBack, clasz, Config.GET));
+        request(new NetInfo(null,params,url, callBack, clasz, NetConfig.GET));
     }
 
     public void get(String url, Map<String,Object> params, NetCallBack callBack) {
-        request(new NetInfo(null,params,url, callBack, String.class, Config.GET));
+        request(new NetInfo(null,params,url, callBack, String.class, NetConfig.GET));
     }
 
 
     public void post(String url, Map<String,Object> params, NetCallBack callBack, Class clasz) {
-        request(new NetInfo(null,params,url, callBack, clasz, Config.POST));
+        request(new NetInfo(null,params,url, callBack, clasz, NetConfig.POST));
     }
 
 

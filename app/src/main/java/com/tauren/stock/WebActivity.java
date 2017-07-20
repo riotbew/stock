@@ -45,11 +45,11 @@ public class WebActivity extends FragmentActivity {
                 // 打电话
                 else if (url.indexOf("tel://") != -1) {
                     final String number = url.substring("tel://".length());
-//                    Config.callPhoneByNumber(h5Activity, number);
+//                    NetConfig.callPhoneByNumber(h5Activity, number);
                     return true;
                 } else if (url.indexOf("tel:") != -1) {
                     final String number = url.substring("tel:".length());
-//                    Config.callPhoneByNumber(h5Activity, number);
+//                    NetConfig.callPhoneByNumber(h5Activity, number);
                     return true;
                 } else if (uri.getHost().equals("jim-qiu")) {
                     startActivity(new Intent(Intent.ACTION_VIEW, uri));
